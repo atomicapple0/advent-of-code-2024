@@ -7,23 +7,36 @@
 # conventions: borrowed, inout, owned, ref????
 # & and &mut seem superior :/
 
+# 171183089
+# 63866497
+
 from collections import Optional
 
 
 fn munch_num(data: String, inout idx: Int) raises -> Int:
-    var num = String()
-    while True:
-        if idx >= len(data):
-            raise Error()
-        if len(num) > 3:
-            raise Error()
-        if data[idx].isdigit():
-            num += data[idx]
-            idx += 1
-        else:
-            if len(num) == 0:
-                raise Error()
-            return int(num)
+    var acc = String()
+    acc += munch_digit(data, idx)
+
+    # i miss you ? operator
+    try:
+        acc += munch_digit(data, idx)
+    except:
+        pass
+
+    try:
+        acc += munch_digit(data, idx)
+    except:
+        pass
+
+    return int(acc)
+
+
+fn munch_digit(data: String, inout idx: Int) raises -> String:
+    if not (idx < len(data) and data[idx].isdigit()):
+        raise Error()
+    x = data[idx]
+    idx += 1
+    return x
 
 
 fn munch_char(data: String, inout idx: Int, c: String) raises:
